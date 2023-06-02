@@ -41,6 +41,6 @@ private:
 		return MAX_LENGTH_SCORE - (gap * MAX_LENGTH_SCORE / shortStrLength);
 	}
 
-	int MAX_LENGTH_SCORE = 60;
-	int MIN_LENGTH_SCORE = 0;
+	const int MAX_LENGTH_SCORE = 60;
+	const int MIN_LENGTH_SCORE = 0;
 };
