@@ -60,10 +60,7 @@ private:
 	}
 
 	vector<int> getAlphaBitmap(const string& str) {
-		vector<int> alphaBitmap;
-		for (int i = 0; i < 26; i++) {
-			alphaBitmap.push_back(0);
-		}
+		vector<int> alphaBitmap(26);
 		for (int i = 0; i < str.length(); i++) {
 			alphaBitmap[str[i] - 'A'] = 1;
 		}
