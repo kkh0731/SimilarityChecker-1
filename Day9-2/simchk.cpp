@@ -8,13 +8,8 @@ public:
 		int input1Length = input1.length();
 		int input2Length = input2.length();
 
-		if (checkSameLength(input1Length, input2Length)) {
-			return 60;
-		}
-
-		if (checkDoubleLength(input1Length, input2Length)) {
-			return 0;
-		}
+		if (checkSameLength(input1Length, input2Length)) return MAX_LENGTH_SCORE;
+		if (checkDoubleLength(input1Length, input2Length)) return MIN_LENGTH_SCORE;
 
 		int longStrLength = getLongLength(input1Length, input2Length);
 		int shortStrLength = getShortLength(input1Length, input2Length);
@@ -43,6 +38,9 @@ private:
 	}
 
 	int calculateLengthSimilarityScore(int shortStrLength, int gap) {
-		return 60 - (gap * 60 / shortStrLength);
+		return MAX_LENGTH_SCORE - (gap * MAX_LENGTH_SCORE / shortStrLength);
 	}
+
+	const int MAX_LENGTH_SCORE = 60;
+	const int MIN_LENGTH_SCORE = 0;
 };
