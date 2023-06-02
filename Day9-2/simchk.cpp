@@ -1,4 +1,5 @@
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -15,6 +16,18 @@ public:
 		int shortStrLength = getShortLength(input1Length, input2Length);
 		int gap = longStrLength - shortStrLength;
 		return calculateLengthSimilarityScore(shortStrLength, gap);
+	}
+
+	int getAlphaSimilarityScore(const string& input1, const string& input2) {
+		vector<int> alphaBitmap1 = getAlphaBitmap(input1);
+		vector<int> alphaBitmap2 = getAlphaBitmap(input2);
+
+		int alphaSameCnt = getAlphaSameCount(alphaBitmap1, alphaBitmap2);
+		int alphaDiffCnt = getAlphaDiffCount(alphaBitmap1, alphaBitmap2);
+
+		if (checkSameAlpha(alphaDiffCnt)) return 40;
+		if (checkDiffAlpha(alphaSameCnt)) return 0;
+		return calculateAlphaSimilarityScore(alphaSameCnt, alphaDiffCnt);
 	}
 
 private:
@@ -39,6 +52,48 @@ private:
 
 	int calculateLengthSimilarityScore(int shortStrLength, int gap) {
 		return MAX_LENGTH_SCORE - (gap * MAX_LENGTH_SCORE / shortStrLength);
+	}
+
+	vector<int> getAlphaBitmap(const string& str) {
+		vector<int> alphaBitmap(26);
+		for (int i = 0; i < str.length(); i++) {
+			alphaBitmap[str[i] - 'A'] = 1;
+		}
+		return alphaBitmap;
+	}
+
+	int getAlphaSameCount(vector<int> alphaBitmap1, vector<int> alphaBitmap2)
+	{
+		int result = 0;
+		for (int i = 0; i < 26; i++) {
+			if (alphaBitmap1[i] != 0 || alphaBitmap2[i] != 0) {
+				if (alphaBitmap1[i] == alphaBitmap2[i]) result++;
+			}
+		}
+		return result;
+	}
+
+	int getAlphaDiffCount(vector<int> alphaBitmap1, vector<int> alphaBitmap2)
+	{
+		int result = 0;
+		for (int i = 0; i < 26; i++) {
+			if (alphaBitmap1[i] != 0 || alphaBitmap2[i] != 0) {
+				if (alphaBitmap1[i] != alphaBitmap2[i]) result++;
+			}
+		}
+		return result;
+	}
+
+	bool checkSameAlpha(int alphaDiffCnt) {
+		return alphaDiffCnt == 0;
+	}
+
+	bool checkDiffAlpha(int alphaSameCnt) {
+		return alphaSameCnt == 0;
+	}
+
+	int calculateAlphaSimilarityScore(int alphaSameCnt, int alphaDiffCnt) {
+		return alphaSameCnt * 40 / (alphaSameCnt + alphaDiffCnt);
 	}
 
 	const int MAX_LENGTH_SCORE = 60;
