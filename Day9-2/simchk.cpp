@@ -25,8 +25,8 @@ public:
 		int alphaSameCnt = getAlphaSameCount(alphaBitmap1, alphaBitmap2);
 		int alphaDiffCnt = getAlphaDiffCount(alphaBitmap1, alphaBitmap2);
 
-		if (checkSameAlpha(alphaDiffCnt)) return 40;
-		if (checkDiffAlpha(alphaSameCnt)) return 0;
+		if (checkSameAlpha(alphaDiffCnt)) return MAX_ALPHA_SCORE;
+		if (checkDiffAlpha(alphaSameCnt)) return MIN_ALPHA_SCORE;
 		return calculateAlphaSimilarityScore(alphaSameCnt, alphaDiffCnt);
 	}
 
@@ -55,17 +55,16 @@ private:
 	}
 
 	vector<int> getAlphaBitmap(const string& str) {
-		vector<int> alphaBitmap(26);
+		vector<int> alphaBitmap(NUMBER_OF_ALPHA);
 		for (int i = 0; i < str.length(); i++) {
 			alphaBitmap[str[i] - 'A'] = 1;
 		}
 		return alphaBitmap;
 	}
 
-	int getAlphaSameCount(vector<int> alphaBitmap1, vector<int> alphaBitmap2)
-	{
+	int getAlphaSameCount(vector<int> alphaBitmap1, vector<int> alphaBitmap2) {
 		int result = 0;
-		for (int i = 0; i < 26; i++) {
+		for (int i = 0; i < NUMBER_OF_ALPHA; i++) {
 			if (alphaBitmap1[i] != 0 || alphaBitmap2[i] != 0) {
 				if (alphaBitmap1[i] == alphaBitmap2[i]) result++;
 			}
@@ -73,10 +72,9 @@ private:
 		return result;
 	}
 
-	int getAlphaDiffCount(vector<int> alphaBitmap1, vector<int> alphaBitmap2)
-	{
+	int getAlphaDiffCount(vector<int> alphaBitmap1, vector<int> alphaBitmap2) {
 		int result = 0;
-		for (int i = 0; i < 26; i++) {
+		for (int i = 0; i < NUMBER_OF_ALPHA; i++) {
 			if (alphaBitmap1[i] != 0 || alphaBitmap2[i] != 0) {
 				if (alphaBitmap1[i] != alphaBitmap2[i]) result++;
 			}
@@ -93,9 +91,12 @@ private:
 	}
 
 	int calculateAlphaSimilarityScore(int alphaSameCnt, int alphaDiffCnt) {
-		return alphaSameCnt * 40 / (alphaSameCnt + alphaDiffCnt);
+		return alphaSameCnt * MAX_ALPHA_SCORE / (alphaSameCnt + alphaDiffCnt);
 	}
 
 	const int MAX_LENGTH_SCORE = 60;
 	const int MIN_LENGTH_SCORE = 0;
+	const int MAX_ALPHA_SCORE = 40;
+	const int MIN_ALPHA_SCORE = 0;
+	const int NUMBER_OF_ALPHA = 26;
 };
